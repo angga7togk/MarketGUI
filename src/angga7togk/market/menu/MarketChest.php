@@ -30,7 +30,7 @@ class MarketChest{
 	}
 	
 	public function sendChest(Player $player, string $content = "menu", int $id = null): void{
-	   $menu = InvMenu::create(InvMenu::TYPE_CHEST);
+	   $menu = InvMenu::create(InvMenu::TYPE_DOUBLE_CHEST);
 	   $menu->readonly();
 	   $menu->setListener([Market::$eventListner, "MarketMenu"]);
 	   $menu->setName($this->getPrefix());

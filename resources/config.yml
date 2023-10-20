@@ -1,1 +1,3 @@
-prefix: "§b[Market] §r"
+prefix: "§l[Market] "
+database: YAML
+provider: EconomyAPI

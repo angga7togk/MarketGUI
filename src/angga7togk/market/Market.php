@@ -2,6 +2,7 @@
 
 namespace angga7togk\market;
 
+use angga7togk\market\command\MarketCommand;
 use angga7togk\market\database\Database;
 use angga7togk\market\database\YAML;
 use angga7togk\market\listener\MenuListener;
@@ -16,8 +17,8 @@ class Market extends PluginBase {
 	public static MenuListener $eventListner;
 	public static String $prefix;
 
-	public Database $database;
-	public Provider $provider;
+	public static Database $database;
+	public static Provider $provider;
 
 	public static String $databaseName;
 	public static String $providerName;
@@ -31,7 +32,6 @@ class Market extends PluginBase {
 		$this->saveResource("config.yml");
 
 		self::$cfg = new Config($this->getDataFolder() ."config.yml", Config::YAML, array());
-		self::$eventListner = new MenuListener();
 		self::$prefix = self::$cfg->getNested("prefix");
 		self::$databaseName = self::$cfg->getNested("database");
 		self::$providerName = self::$cfg->getNested("provider");
@@ -39,7 +39,10 @@ class Market extends PluginBase {
 		$this->setDatabase();
 		$this->setProvider();
 
+		self::$eventListner = new MenuListener();
 		$this->getServer()->getPluginManager()->registerEvents(new MenuListener(), $this);
+
+		$this->getServer()->getCommandMap()->register("market", new MarketCommand());
 	}
 
 	public static function getDatabase():Database{
@@ -51,13 +54,13 @@ class Market extends PluginBase {
 	}
 
 	protected function setDatabase(){
-		if(self::$databaseName == "YAML"){
+		if(strtolower(self::$databaseName) == "yaml"){
 			self::$database = new YAML(self::$databaseName);
 		}
 	}
 
 	protected function setProvider(){
-		if(self::$providerName == "EconomyAPI"){
+		if(strtolower(self::$providerName) == "economyapi"){
 			self::$provider = new EconomyAPI(self::$providerName);
 		}
 	}
